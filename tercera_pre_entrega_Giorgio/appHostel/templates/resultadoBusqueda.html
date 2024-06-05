@@ -1,0 +1,17 @@
+{% extends 'padre.html' %}
+
+{% block cambiaContenido %}
+    <h1>Resultado de la búsqueda de puestos por nombre {{ nombre }}</h1>
+
+    {% if empleados %}
+        <ul>
+        {% for empleado in empleados %}
+            <li>{{ empleado.nombre }} - {{ empleado.apellido }} - {{ empleado.puesto }}</li>
+        {% endfor %}
+        </ul>
+    {% else %}
+        <p>No se encontraron empleados con ese nombre.</p>
+    {% endif %}
+
+    <p>aca tendria que haber un parrafo</p>
+{% endblock cambiaContenido %}

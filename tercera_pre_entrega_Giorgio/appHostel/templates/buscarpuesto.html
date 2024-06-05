@@ -1,0 +1,12 @@
+{% extends 'padre.html' %}
+
+{% block cambiaContenido %}
+    <h1>Buscar empleados</h1>
+
+    <form action="{% url 'buscarEmpleados' %}" method="get">
+        <p><input type="text" name="nombre" placeholder="Nombre del empleado"></p>
+        <button type="submit">Buscar</button>
+    </form>
+
+    <p>aca tendria que haber un parrafo</p>
+{% endblock cambiaContenido %}

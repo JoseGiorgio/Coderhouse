@@ -1,0 +1,27 @@
+{% extends 'padre.html' %}
+
+{% block cambiaContenido %}
+
+
+<h1>Lista Empleados</h1>
+
+<ul>
+
+
+{% for empleado in empleados %}
+    <li>
+    {{empleado}}
+    </li>
+    
+{% endfor %}
+
+
+</ul>
+
+
+    
+{% endblock cambiaContenido %}
+
+
+
+
