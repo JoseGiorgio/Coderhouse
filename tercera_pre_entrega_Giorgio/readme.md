@@ -15,8 +15,8 @@ PRIMERAS OPCIONES EN PANTALLA
 ingresar al admin poniendo la direccion /admin
 
 credenciales para ingresar:
-username:david
-password:david1234
+username:jose
+password:123
 
 la otra opcion es ingresar a la pagina web con la direccion /appHostel
 
