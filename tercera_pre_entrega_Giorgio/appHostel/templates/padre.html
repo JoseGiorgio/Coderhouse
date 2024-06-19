@@ -4,62 +4,46 @@
     {% load static %}
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Primer Hostel Django</title>
-    <link rel="stylesheet" href="{% static "css/styles.css" %}">
-    <link href="{% static "css/mis_estilos.css" %}" rel="stylesheet" />
+    <title>Primer hostel django</title>
+    <link rel="stylesheet" href="{% static 'css/styles.css' %}">
+    <link href="{% static 'css/mis_estilos.css' %}" rel="stylesheet" />
 </head>
 <body>
-
-    <header>
-        <div class="logo">Django</div>
-
-
+    
+    <header >
+        <div class="logo">Hostel DJANGO</div>
+        
+        
 
     </header>
     {% include 'navbar.html' %}
-    <main>
-        <section id="inicio" class="hero">
+    <main >
+        <section  class="hero">
             <h1>Hostel</h1>
-            <h1> de Django</h1>
-
-
-
+            <h2>DJANGO</h2>
+            
+            
+            
         </section>
-
+       
         {% block cambiaContenido %}
-
+    
 
 
         {% endblock cambiaContenido %}
 
+        
 
-
-
-
-
-
-
-
-
-        <section id="contacto" class="contact">
-            <h2>Contacto</h2>
-            <div class="social-links">
-                <a href="" target="_blank"><img src="logos\face.png" alt="Facebook"></a>
-                <a href="" target="_blank"><img src="logos\tw.png" alt="Twitter"></a>
-                <a href="" target="_blank"><img src="logos\insta.png" alt="Instagram"></a>
-                <a href="" target="_blank"><img src="logos\yt.png" alt="YouTube"></a>
-                <a href="https://www.linkedin.com/" target="_blank"><img src="logos\in.png" alt="linkedin"></a>
-                <a href="" target="_blank"><img src="logos\in.png" alt="Portfolio"></a>
-
-            </div>
-            <p>Email: contacto@hosteldjango.com</p>
-        </section>
+        
+        
+        
+        
     </main>
 
     <footer>
         <div class="footer-content">
-            <img src="rodeo-logo.png" alt="Rodeo Entertainment">
-            <p>hostel django - 2024</p>
+            
+            <p>Hostel django - 2024</p>
         </div>
     </footer>
 

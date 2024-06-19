@@ -1,0 +1,13 @@
+{% extends 'padre.html' %}
+
+{% block cambiaContenido %}
+
+<h1> Crear nuevo usuario</h1>
+
+    <form action="{% url 'registrar' %}" method="post">
+        {% csrf_token %}
+        {{ miFormulario.as_p }}
+        <button type="submit">Nueva cuenta</button>
+    </form>
+    
+{% endblock cambiaContenido %}

@@ -9,8 +9,25 @@
         <a class="nav_boton" href="{% url "empleadoFormulario" %}">Agregar Empleados</a>
         <a class="nav_boton" href="{% url "listaempleado" %}">Lista Empleados</a>
         <a class="nav_boton" href="{% url "clienteFormulario" %}">Clientes</a>
-        <a class="nav_boton_registrar" href="{% url "inicio" %}">Registrate!</a>
+        <a class="nav_boton" href="{% url "about" %}">Acerca de nosotros</a>
 
+        {% if user.is_authenticated %}
+
+            <p>Bienvenido {{user.username}}</p>
+            <form action="{% url 'logout' %}" method="post"> {% csrf_token %}
+                <button type="submit">Salir</button>
+                <a  href="{% url 'editarPerfil' %}">Editar perfil</a>
+                <a  href="{% url '' %}">Agregar Avatar</a>
+            </form>    
+
+        {% else %}
+        <div class="auth-buttons">
+            <a class="nav_boton_registrar" href="{% url 'login' %}">Ingresar</a>
+        </div>
+        <div class="auth-buttons">
+            <a class="nav_boton_registrar" href="{% url 'registrar' %}">Crear cuenta</a>
+        </div>
+        {% endif %}    
 
     </div>
 </nav>

@@ -1,4 +1,5 @@
 from django.db import models
+from django.contrib.auth.models import User
 
 # Create your models here.
 
@@ -28,3 +29,10 @@ class Empleado(models.Model):
 
     def __str__(self):
         return f"{self.nombre} - {self.apellido} - {self.puesto} "
+
+
+
+class Avatar(models.Model):
+
+    User = models.OneToOneField(User, on_delete=models.CASCADE)
+    imagen = models.ImageField((""), upload_to=None, height_field=None, width_field=None, max_length=None)

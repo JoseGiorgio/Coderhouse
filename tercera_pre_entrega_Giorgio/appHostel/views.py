@@ -1,9 +1,14 @@
 from django.shortcuts import render
 from appHostel.models import Cuarto, Cliente, Empleado
-from .forms import Cuartoformulario, Clienteformulario, Empleadoformulario 
+from .forms import Cuartoformulario, Clienteformulario,Empleadoformulario, UserEditForm 
+from django.contrib.auth import authenticate, login, logout
+from django.contrib.auth.forms import AuthenticationForm, UserChangeForm, UserCreationForm
+from django.contrib.auth.decorators import login_required
+from django.contrib.admin.views.decorators import staff_member_required
+
 
 # Views .
-
+@staff_member_required(login_url="/appHostel/login")
 def agregar_cuarto(req):
 
     if  req.method == "POST":
@@ -28,7 +33,7 @@ def agregar_cuarto(req):
 
 
    
-
+@staff_member_required(login_url="/appHostel/login")
 def agregar_cliente(req):
 
     if  req.method == "POST":
@@ -52,7 +57,7 @@ def agregar_cliente(req):
     
 
 
-
+@staff_member_required(login_url="/appHostel/login")
 def agregar_empleado(req):
     
     if  req.method == "POST":
@@ -76,13 +81,6 @@ def agregar_empleado(req):
 
 
 
-
-
-
-
-
-
-
 def inicio(req):
 
     return render(req, "inicio.html" ,{})    
@@ -100,7 +98,7 @@ def empleados(req):
     return render(req, "empleado.html" ,{})    
 
 
-
+@staff_member_required(login_url="/appHostel/login")
 def lista_empleado(req):
 
     mis_empleados = Empleado.objects.all()
@@ -109,7 +107,7 @@ def lista_empleado(req):
 
 
 
-
+@staff_member_required(login_url="/appHostel/login")
 def buscar_puesto(req):
     return render(req, "buscarpuesto.html", {})
 
@@ -124,5 +122,151 @@ def buscar(req):
             return render(req, "inicio.html", {"mensaje": "No se encontraron empleados con ese nombre"})
     else:
         return render(req, "inicio.html", {"mensaje": "Los datos no son correctos"})
+
+
+def empleadoEditado(req,id): 
+
+    if req.method == "POST":
+
+        miFormulario = Empleadoformulario(req.POST)
+
+        if miFormulario.is_valid():
+
+            informacion = miFormulario.cleaned_data
+
+            empleado = Empleado.objects.get(id = id)
+
+            empleado.nombre = informacion["nombre"]
+            empleado.apellido = informacion["apellido"]
+            empleado.puesto = informacion["puesto"]
+           
+            empleado.save()
+
+            return render (req,"inicio.html",{"mensaje":"Empleado actualizado con exito"})
+        else:
+            return render (req,"inicio.html",{"mensaje":"Datos invalidos"})
+
+    else:
+        empleado = Empleado.objects.get(id = id)
+
+        miFormulario = Empleadoformulario(initial={
+          "nombre": empleado.nombre,
+          "apellido": empleado.apellido,
+          "puesto": empleado.puesto,  
+        })
+
+        return render(req,"editarEmpleado.html",{"miFormulario": miFormulario, "id":  empleado.id})
+    
+
+def eliminarEmpleado(req,id):
+
+    if req.method == 'POST':
+
+
+        empleado = Empleado.objects.get(id=id)
+        empleado.delete()
+
+        mis_empleados = Empleado.objects.all()
+
+    return render(req,"listaEmpleado.html",{"empleados": mis_empleados})
+
+
+
+
+def about(req):
+    return render(req,"about.html")
+
+
+
+
+def login_view(req):
+        
+    if req.method == "POST":    
+
+        miFormulario = AuthenticationForm(req, data=req.POST)
+
+        if miFormulario.is_valid():
+
+            informacion = miFormulario.cleaned_data
+
+            usuario = informacion["username"]
+            pss = informacion["password"]
+
+            user = authenticate(username = usuario, password =pss)
+
+            if user:
+                login(req, user)
+                return render (req,"inicio.html",{"mensaje":f"A ingresado a la sesion de {usuario}"})
+            else:
+                return render (req, "inicio.html", {"mensaje":"Los datos no son correctos"})
+        
+        else:
+            return render (req, "inicio.html", {"mensaje":"Los datos no son validos"})
+
+    else:
+        miFormulario = AuthenticationForm()
+
+        return render(req, "login.html", {"miFormulario": miFormulario})    
+
+
+
+def register(req):
+
+    if req.method == "POST":
+        
+        miFormulario = UserCreationForm(req.POST)
+
+        if miFormulario.is_valid():
+
+            informacion = miFormulario.cleaned_data
+
+            usuario = informacion["usermane"]
+            miFormulario.save()
+
+            return render(req, "inicio.html", {"mensaje":f"Usuario {usuario} creado correctamente!!"})
+        
+        else:
+            return render(req, "inicio.html", {"mensaje":"Los datos no son validos"})
+        
+    else:
+        miFormulario = UserChangeForm()
+        return render(req, "inicio.html", {"miFormulario": miFormulario})
+
+
+@login_required
+def editar_perfil(req):
+
+    usuario = req.user
+
+    if req.method == "POST":
+        miFormulario = UserEditForm(req.POST, instance =req.user)
+
+        if miFormulario.is_valid():
+
+            informacion = miFormulario.cleaned_data
+
+            usuario.first_name = informacion["first_name"]
+            usuario.last_name = informacion["last_name"]
+            usuario.email = informacion["email"]
+            usuario.set_password(informacion["password1"])
+
+            usuario.save()
+
+            return render(req,"inicio.html",{"mensaje":"Los datos se actualizaron con exito!"})
+        else:
+            return render(req,"inicio.html", {"mensaje": "Los datos no son correctos"})
+
+    else:
+
+        miFormulario = UserEditForm(instance = req.user)
+        return render(req,"editarPerfil.html",{"miFormulario": miFormulario})
+    
+
+
+
+
+
+
+
 
 
