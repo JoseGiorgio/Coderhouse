@@ -4,11 +4,18 @@
 {% block cambiaContenido %}
 
 
-<h1> Titulo inicio</h1>
+   <h1> Titulo inicio</h1>
 
-<p>
-   {{mensaje}}
-</p>
+   <p>
+      {{mensaje}}
+   </p>
+
+
+   {% if url %}
+      <img src="{{url}}" alt="avatar">
+   
+   {% endif %}
+   
     
 {% endblock cambiaContenido %}
 

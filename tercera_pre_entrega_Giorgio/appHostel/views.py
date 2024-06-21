@@ -1,6 +1,6 @@
 from django.shortcuts import render
-from appHostel.models import Cuarto, Cliente, Empleado
-from .forms import Cuartoformulario, Clienteformulario,Empleadoformulario, UserEditForm 
+from appHostel.models import Cuarto, Cliente, Empleado, Avatar
+from .forms import Cuartoformulario, Clienteformulario,Empleadoformulario, UserEditForm, AvatarFormulario
 from django.contrib.auth import authenticate, login, logout
 from django.contrib.auth.forms import AuthenticationForm, UserChangeForm, UserCreationForm
 from django.contrib.auth.decorators import login_required
@@ -82,8 +82,11 @@ def agregar_empleado(req):
 
 
 def inicio(req):
-
-    return render(req, "inicio.html" ,{})    
+    try:
+        avatar = Avatar.objects.get(user=req.user.id)
+        return render(req, "inicio.html", {"url": avatar.imagen.url})
+    except:
+        return render(req, "inicio.html")    
 
 def cuartos(req):
 
@@ -96,7 +99,6 @@ def clientes(req):
 def empleados(req):
 
     return render(req, "empleado.html" ,{})    
-
 
 @staff_member_required(login_url="/appHostel/login")
 def lista_empleado(req):
@@ -196,7 +198,7 @@ def login_view(req):
 
             if user:
                 login(req, user)
-                return render (req,"inicio.html",{"mensaje":f"A ingresado a la sesion de {usuario}"})
+                return render (req,"inicio.html",{"mensaje":f"Ha ingresado a la sesion de {usuario}"})
             else:
                 return render (req, "inicio.html", {"mensaje":"Los datos no son correctos"})
         
@@ -211,16 +213,14 @@ def login_view(req):
 
 
 def register(req):
-
     if req.method == "POST":
         
         miFormulario = UserCreationForm(req.POST)
 
         if miFormulario.is_valid():
-
             informacion = miFormulario.cleaned_data
 
-            usuario = informacion["usermane"]
+            usuario = informacion["username"]
             miFormulario.save()
 
             return render(req, "inicio.html", {"mensaje":f"Usuario {usuario} creado correctamente!!"})
@@ -229,8 +229,8 @@ def register(req):
             return render(req, "inicio.html", {"mensaje":"Los datos no son validos"})
         
     else:
-        miFormulario = UserChangeForm()
-        return render(req, "inicio.html", {"miFormulario": miFormulario})
+        miFormulario = UserCreationForm()
+        return render(req, "registrar.html", {"miFormulario": miFormulario}) 
 
 
 @login_required
@@ -242,7 +242,6 @@ def editar_perfil(req):
         miFormulario = UserEditForm(req.POST, instance =req.user)
 
         if miFormulario.is_valid():
-
             informacion = miFormulario.cleaned_data
 
             usuario.first_name = informacion["first_name"]
@@ -262,6 +261,31 @@ def editar_perfil(req):
         return render(req,"editarPerfil.html",{"miFormulario": miFormulario})
     
 
+
+def agregar_avatar(req):
+
+    if req.method == "POST":
+
+        miFormulario = AvatarFormulario(req.POST, req.FILES)
+
+        if miFormulario.is_valid():
+
+            informacion = miFormulario.cleaned_data
+
+            
+            avatar = Avatar(user=req.user, imagen=informacion["imagen"])
+            avatar.save()
+
+            return render (req,"inicio.html",{"mensaje":"El avatar se cargo con exito"})
+        else:
+            return render (req,"inicio.html",{"mensaje":"Datos invalidos"})
+
+    else:
+        
+        miFormulario = AvatarFormulario()
+
+        return render(req,"agregarAvatar.html",{"miFormulario": miFormulario})
+    
 
 
 

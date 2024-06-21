@@ -35,4 +35,4 @@ class Empleado(models.Model):
 class Avatar(models.Model):
 
     User = models.OneToOneField(User, on_delete=models.CASCADE)
-    imagen = models.ImageField((""), upload_to=None, height_field=None, width_field=None, max_length=None)
+    imagen = models.ImageField(upload_to="avatares", blank=True, null=True)

@@ -22,5 +22,9 @@ urlpatterns =[
     path("registrar/", register, name="registrar"),
     path("logout/", LogoutView.as_view(template_name = "logout.html"), name="logout"),
     path("editarPerfil/", editar_perfil, name="editarPerfil"),
+    path("agregarAvatar/", agregar_avatar, name="agregarAvatar"),
 
 ]
+
+
+

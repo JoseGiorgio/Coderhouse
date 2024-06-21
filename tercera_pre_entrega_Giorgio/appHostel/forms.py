@@ -1,6 +1,6 @@
 from django import forms
-from .models import Empleado
-from django.contrib.auth.forms import UserChangeForm
+from .models import Empleado, Avatar
+from django.contrib.auth.forms import UserChangeForm, UserCreationForm
 from django.contrib.auth.models import User
 
 
@@ -25,7 +25,13 @@ class Empleadoformulario(forms.Form):
     apellido = forms.CharField()
     puesto = forms.CharField()     
 
-    
+
+class Clienteformulario(forms.Form):
+
+    nombre = forms.CharField()   
+    apellido = forms.CharField()
+    edad = forms.IntegerField()
+    nacionalidad = forms.CharField() 
 
 class UserEditForm(UserChangeForm):
 
@@ -55,8 +61,11 @@ class UserEditForm(UserChangeForm):
         return password2
 
 
+class AvatarFormulario(forms.ModelForm):
 
-
+    class Meta:
+        model=Avatar
+        fields=("imagen",)
 
 
 
