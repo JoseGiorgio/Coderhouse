@@ -1,8 +1,0 @@
-setup.py
-paquete_entregas/__init__.py
-paquete_entregas/cliente.py
-paquete_entregas/seleccion_cliente.py
-segunda_pre_entrega_Giorgio.egg-info/PKG-INFO
-segunda_pre_entrega_Giorgio.egg-info/SOURCES.txt
-segunda_pre_entrega_Giorgio.egg-info/dependency_links.txt
-segunda_pre_entrega_Giorgio.egg-info/top_level.txt
